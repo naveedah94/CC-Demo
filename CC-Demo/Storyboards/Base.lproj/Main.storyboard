@@ -475,6 +475,8 @@
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UJu-ey-TZN">
                                                             <rect key="frame" x="8" y="8" width="110" height="110"/>
+                                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="UJu-ey-TZN" secondAttribute="height" multiplier="1:1" id="3ZQ-vx-hSu"/>
                                                             </constraints>
@@ -566,6 +568,13 @@
                                                                 <constraint firstAttribute="height" constant="36" id="JuJ-Oo-Sby"/>
                                                             </constraints>
                                                         </stackView>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="29d-YS-9hT">
+                                                            <rect key="frame" x="4" y="125" width="406" height="1"/>
+                                                            <color key="backgroundColor" white="0.67000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="1" id="mdF-P0-E9n"/>
+                                                            </constraints>
+                                                        </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
@@ -577,8 +586,11 @@
                                                         <constraint firstItem="eoY-oO-j3e" firstAttribute="top" secondItem="p0N-fB-p5z" secondAttribute="bottom" constant="8" id="TrA-D1-Uw1"/>
                                                         <constraint firstItem="g6w-ev-kqe" firstAttribute="leading" secondItem="eoY-oO-j3e" secondAttribute="trailing" constant="8" id="b2K-B7-Kqf"/>
                                                         <constraint firstItem="UJu-ey-TZN" firstAttribute="leading" secondItem="mYu-ng-I8C" secondAttribute="leading" constant="8" id="ckE-nj-BdL"/>
+                                                        <constraint firstItem="29d-YS-9hT" firstAttribute="leading" secondItem="mYu-ng-I8C" secondAttribute="leading" constant="4" id="g3d-cW-zR1"/>
                                                         <constraint firstItem="p0N-fB-p5z" firstAttribute="top" secondItem="mYu-ng-I8C" secondAttribute="top" constant="16" id="gBb-sZ-hL1"/>
                                                         <constraint firstItem="eoY-oO-j3e" firstAttribute="leading" secondItem="UJu-ey-TZN" secondAttribute="trailing" constant="8" id="hbu-5y-esK"/>
+                                                        <constraint firstAttribute="trailing" secondItem="29d-YS-9hT" secondAttribute="trailing" constant="4" id="rwI-ev-8t4"/>
+                                                        <constraint firstAttribute="bottom" secondItem="29d-YS-9hT" secondAttribute="bottom" id="sYs-4p-9J3"/>
                                                         <constraint firstItem="g6w-ev-kqe" firstAttribute="leading" secondItem="p0N-fB-p5z" secondAttribute="trailing" constant="8" id="xZO-uh-9XO"/>
                                                         <constraint firstItem="g6w-ev-kqe" firstAttribute="top" secondItem="mYu-ng-I8C" secondAttribute="top" id="zsV-t8-lmE"/>
                                                     </constraints>
@@ -651,8 +663,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="location_icon" width="129" height="129"/>
-        <image name="navigation_icon" width="220" height="230"/>
+        <image name="location_icon" width="900" height="980"/>
+        <image name="navigation_icon" width="512" height="512"/>
         <image name="restaurant_icon" width="117" height="118"/>
     </resources>
 </document>
