@@ -41,6 +41,9 @@
 		1D80D4742246D0DD009F005E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D80D4732246D0DD009F005E /* Constants.swift */; };
 		1D80D4772246D970009F005E /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D80D4762246D970009F005E /* Helper.swift */; };
 		83C81A27B0514E457817225B /* Pods_CC_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82007BAE51FD3D6A91069F14 /* Pods_CC_Demo.framework */; };
+		DD006B162248C44200063948 /* CurrentWeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD006B152248C44200063948 /* CurrentWeatherViewModel.swift */; };
+		DD006B182248C6F400063948 /* ForecastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD006B172248C6F400063948 /* ForecastViewModel.swift */; };
+		DD006B1B2248DA2200063948 /* RestaurantItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD006B1A2248DA2200063948 /* RestaurantItemViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +85,9 @@
 		297FA26D53FBDCD9A06F8FD9 /* Pods-CC-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CC-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-CC-Demo/Pods-CC-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		82007BAE51FD3D6A91069F14 /* Pods_CC_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CC_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B734115AF4FE15ED0366FBC7 /* Pods-CC-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CC-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CC-Demo/Pods-CC-Demo.debug.xcconfig"; sourceTree = "<group>"; };
+		DD006B152248C44200063948 /* CurrentWeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherViewModel.swift; sourceTree = "<group>"; };
+		DD006B172248C6F400063948 /* ForecastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModel.swift; sourceTree = "<group>"; };
+		DD006B1A2248DA2200063948 /* RestaurantItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantItemViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +281,7 @@
 		1D80D4672246D003009F005E /* Weather View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				DD006B142248C43100063948 /* ViewModel */,
 				1D80D4692246D02C009F005E /* WeatherViewController.swift */,
 			);
 			path = "Weather View Controller";
@@ -283,6 +290,7 @@
 		1D80D4682246D00D009F005E /* Restaurants View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				DD006B192248DA1400063948 /* ViewModel */,
 				1D80D46B2246D038009F005E /* RestaurantsViewController.swift */,
 			);
 			path = "Restaurants View Controller";
@@ -346,6 +354,23 @@
 				297FA26D53FBDCD9A06F8FD9 /* Pods-CC-Demo.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		DD006B142248C43100063948 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DD006B152248C44200063948 /* CurrentWeatherViewModel.swift */,
+				DD006B172248C6F400063948 /* ForecastViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DD006B192248DA1400063948 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DD006B1A2248DA2200063948 /* RestaurantItemViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -495,10 +520,13 @@
 				1D0A19782248371D00333BE3 /* PlaceItem.swift in Sources */,
 				1D80D44A2246C4D3009F005E /* WeatherForecastItem.swift in Sources */,
 				1D0A19742248367500333BE3 /* SuggestedBounds.swift in Sources */,
+				DD006B182248C6F400063948 /* ForecastViewModel.swift in Sources */,
+				DD006B1B2248DA2200063948 /* RestaurantItemViewModel.swift in Sources */,
 				1D0A198022484FFB00333BE3 /* RestaurantCollectionViewCell.swift in Sources */,
 				1D0A1976224836E600333BE3 /* Group.swift in Sources */,
 				1D80D44D2246C5A0009F005E /* MainWeatherData.swift in Sources */,
 				1D80D44F2246C671009F005E /* Weather.swift in Sources */,
+				DD006B162248C44200063948 /* CurrentWeatherViewModel.swift in Sources */,
 				1D80D4622246CEBC009F005E /* ForecastWeatherModel.swift in Sources */,
 				1D0A197D22483A2A00333BE3 /* Category.swift in Sources */,
 				1D80D45F2246CE45009F005E /* Coord.swift in Sources */,
@@ -651,15 +679,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = GDJ74W2B9N;
+				DEVELOPMENT_TEAM = 3QWLHTH8YR;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.demo.proload;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.indigoicon.beauty-dev-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Proload Demo DEV";
+				PROVISIONING_PROFILE_SPECIFIER = "Beautician DEV Indigo";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -671,15 +699,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = GDJ74W2B9N;
+				DEVELOPMENT_TEAM = 3QWLHTH8YR;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.demo.proload;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.indigoicon.beauty-dev-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Proload Demo DEV";
+				PROVISIONING_PROFILE_SPECIFIER = "Beautician DEV Indigo";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

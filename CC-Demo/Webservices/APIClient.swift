@@ -35,7 +35,8 @@ class APIClient {
         let parameters = [K.APIParameterKey.client_id:K.Constants.four_square_client_id,
                           K.APIParameterKey.client_secret:K.Constants.four_square_client_secret,
                           K.APIParameterKey.lat_lng:lat + "," + lng,
-                          K.APIParameterKey.api_version:versionApi]
+                          K.APIParameterKey.api_version:versionApi,
+                          K.APIParameterKey.sort_by_distance:"1"]
         
         AF.request(K.ProductionServer.restaurantsBaseURL, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseDecodable { (response: DataResponse<NearByRestaurantsModel>) in
             completion(response.result)

@@ -26,6 +26,7 @@ struct K {
         static let lat_lng = "ll"
         static let category_id = "categoryId"
         static let api_version = "v"
+        static let sort_by_distance = "sortByDistance"
     }
     
     struct EndPoints {

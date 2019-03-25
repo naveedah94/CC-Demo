@@ -14,7 +14,6 @@ import SDWebImage
 class WeatherViewController: UIViewController {
 
     //Outlets Start
-    
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var weatherDescLabel: UILabel!
@@ -36,26 +35,39 @@ class WeatherViewController: UIViewController {
     var currentWeatherData: CurrentWeatherModel?
     var forecastWeatherData: [WeatherForecastItem]?
     
-    let lat = 24.935142
-    let lng = 67.137402
+    var currenWeatherViewModel: CurrentWeatherViewModel?
+    var forecastViewModels: [ForecastViewModel]?
+    
+    var lat: Double?
+    var lng: Double?
+    var isFetchingCityDetails = false
+    
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        self.setupCollectionView()
+        self.setupBtn()
+        self.getLocationUpdates()
+    }
+    
+    func setupCollectionView() {
         self.forecastCollectionView.delegate = self
         self.forecastCollectionView.dataSource = self
-        
+    }
+    
+    func setupBtn() {
         self.restaurantsBtn.clipsToBounds = true
         self.restaurantsBtn.layer.cornerRadius = 16
         self.restaurantsBtn.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
-        self.getCity(from: CLLocation.init(latitude: self.lat, longitude: self.lng)) { (cityName, error) in
-            if error == nil {
-                self.cityName = cityName
-                self.getDataFromService(lat: String(self.lat), lng: String(self.lng))
-            }
-        }
+    }
+    
+    func getLocationUpdates() {
+        MBProgressHUD .showAdded(to: self.view, animated: true)
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,10 +95,15 @@ class WeatherViewController: UIViewController {
             case .success(let data):
                 guard let code = data.cod else {
                     serviceGroup.leave()
+                    Helper.init().displayAlert(title: "Alert", message: "Failed to get data, Some error occured", positive: "OK", postiveListener: {
+                        
+                    }, viewController: self)
                     break
                 }
                 if code == 200 {
                     self.currentWeatherData = data
+                    self.currenWeatherViewModel = CurrentWeatherViewModel.init(currentWeatherData: data)
+                    self.setDataOnView()
                 }
                 serviceGroup.leave()
             case .failure(let error):
@@ -101,10 +118,16 @@ class WeatherViewController: UIViewController {
             case .success(let data):
                 guard let code = data.cod else {
                     serviceGroup.leave()
+                    Helper.init().displayAlert(title: "Alert", message: "Failed to get data, Some error occured", positive: "OK", postiveListener: {
+                        
+                    }, viewController: self)
                     break
                 }
                 if code == "200" {
-                    self.forecastWeatherData = self.filterForecastArray(originalArray: data.forecastArray!)
+                    let filteredData = self.filterForecastArray(originalArray: data.forecastArray!)
+                    self.forecastWeatherData = filteredData
+                    self.forecastViewModels = []
+                    self.forecastViewModels = filteredData.map({ForecastViewModel(item: $0)})
                 }
                 serviceGroup.leave()
             case .failure(let error):
@@ -122,7 +145,7 @@ class WeatherViewController: UIViewController {
                     
                 }, viewController: self)
             } else {
-                if self.currentWeatherData != nil && self.forecastWeatherData != nil {
+                if self.currenWeatherViewModel != nil && self.forecastViewModels != nil {
                     //Yay Got All Data
                     self.setDataOnView()
                 } else {
@@ -146,7 +169,7 @@ class WeatherViewController: UIViewController {
             
             let timeString = timeFormatter.string(from: formatter.date(from: item.dateText!)!)
             
-            if timeString == "06:00:00" {
+            if timeString == "12:00:00" {
                 filteredArray.append(item)
             }
         }
@@ -163,73 +186,57 @@ class WeatherViewController: UIViewController {
     
     func setDataOnView() {
         self.forecastCollectionView.reloadData()
-        if let data = self.currentWeatherData {
+        if let data = self.currenWeatherViewModel {
             if let val = self.cityName {
                 self.cityNameLabel.text = val
             } else {
                 self.cityNameLabel.text = "-"
             }
             
-            let formatter = DateFormatter()
-            formatter.dateFormat = "EEEE"
+            self.dayLabel.text = data.dayString
+            self.weatherDescLabel.text = data.weatherDescriptionString
+            self.temperatureLabel.text = data.temperatureString
+            self.visibilityLabel.text = data.visibilityString
+            self.humidityLabel.text = data.humidityString
+            self.windLabel.text = data.windString
             
-            self.dayLabel.text = formatter.string(from: Date())
-            if let weather = data.weather {
-                if weather.count > 0 {
-                    self.weatherDescLabel.text = weather[0].description
-                    self.weatherImage.sd_setImage(with: URL.init(string: K.ProductionServer.weatherImageUrl + weather[0].icon! + ".png"), completed: nil)
-                } else {
-                    self.weatherDescLabel.text = "-"
-                }
-            } else {
-                self.weatherDescLabel.text = "-"
+            if let url = data.imageUrl {
+                self.weatherImage.sd_setImage(with: url, completed: nil)
             }
-            
-            self.temperatureLabel.text = String.init(format: "%d", Int(self.getConvertedTemperatureFrom(kelvin: (data.main?.temp)!)))
-            
-            self.visibilityLabel.text = String(data.visibility! / 1000)
-            self.humidityLabel.text = String((data.main?.humidity)!)
-            self.windLabel.text = String.init(format: "%.2f", (data.wind?.speed!)! * 3.6)//String((data.wind?.speed!)! * 3.6)
-            
-            
         }
     }
     
-    func getConvertedTemperatureFrom(kelvin: Double) -> Double {
-        guard let tempPreference = UserDefaults.standard.object(forKey: K.Constants.temperature_preference) as? String else {
-            UserDefaults.standard.set(K.Constants.celcius, forKey: K.Constants.temperature_preference)
-            return self.getCelciusFrom(kelvin: kelvin)
-        }
-        if tempPreference == K.Constants.celcius {
-            return self.getCelciusFrom(kelvin: kelvin)
-        } else {
-            return self.getFahrenheitFrom(kelvin: kelvin)
-        }
-    }
-    
-    func getCelciusFrom(kelvin: Double) -> Double {
-        return kelvin - 273.15
-    }
-    
-    func getFahrenheitFrom(kelvin: Double) -> Double {
-        return ((kelvin - 273.15) * (9/5)) + 32
-    }
     
     //IBAction Start
     
     
     @IBAction func celciusBtnClicked(_ sender: Any) {
         UserDefaults.standard.set(K.Constants.celcius, forKey: K.Constants.temperature_preference)
+        if let forecast = self.forecastWeatherData {
+            self.forecastViewModels = forecast.map({ForecastViewModel(item: $0)})
+        }
+        if let currentData = self.currentWeatherData {
+            self.currenWeatherViewModel = CurrentWeatherViewModel.init(currentWeatherData: currentData)
+        }
         self.setDataOnView()
     }
     
     @IBAction func fahrenheitBtnClicked(_ sender: Any) {
         UserDefaults.standard.set(K.Constants.fahrenheit, forKey: K.Constants.temperature_preference)
+        if let forecast = self.forecastWeatherData {
+            self.forecastViewModels = forecast.map({ForecastViewModel(item: $0)})
+        }
+        if let currentData = self.currentWeatherData {
+            self.currenWeatherViewModel = CurrentWeatherViewModel.init(currentWeatherData: currentData)
+        }
         self.setDataOnView()
     }
     
     @IBAction func restaurantsBtnClicked(_ sender: Any) {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "RestaurantsViewController") as! RestaurantsViewController
+        controller.lat = self.lat
+        controller.lng = self.lng
+        controller.cityName = self.cityName
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -245,7 +252,7 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let val = self.forecastWeatherData {
+        if let val = self.forecastViewModels {
             return val.count
         } else {
             return 0
@@ -255,25 +262,36 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ForecastItemCollectionViewCell
         
-        let item = self.forecastWeatherData![indexPath.row]
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "EEE"
-        
-        cell.dayLabel.text = dayFormatter.string(from: formatter.date(from: item.dateText!)!)
-        cell.maxTempLabel.text = String.init(format: "%d °", Int(self.getConvertedTemperatureFrom(kelvin: (item.main?.maxTemp)!)))
-        cell.minTempLabel.text = String.init(format: "%d °", Int(self.getConvertedTemperatureFrom(kelvin: (item.main?.minTemp)!)))
-        
-        cell.weatherImage.sd_setImage(with: URL.init(string: K.ProductionServer.weatherImageUrl + item.weather![0].icon! + ".png"), completed: nil)
+        cell.forecastViewModel = self.forecastViewModels![indexPath.row]
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize.init(width: collectionView.frame.size.width / 5, height: collectionView.frame.size.height)
+    }
+    
+}
+
+extension WeatherViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        if !isFetchingCityDetails {
+            isFetchingCityDetails = true
+            let location = locations[0]
+            self.lat = location.coordinate.latitude
+            self.lng = location.coordinate.longitude
+            self.getCity(from: CLLocation.init(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)) { (cityName, error) in
+                self.locationManager.stopUpdatingLocation()
+                self.locationManager.delegate = nil
+                MBProgressHUD.hide(for: self.view, animated: true)
+                if error == nil {
+                    self.cityName = cityName
+                    self.getDataFromService(lat: String(self.lat!), lng: String(self.lng!))
+                }
+            }
+        }
     }
     
 }

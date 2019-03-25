@@ -33,6 +33,26 @@ class Helper {
     @objc func dateFromTimeInterval(interval: Int) -> Date {
         return Date.init(timeIntervalSince1970: TimeInterval(interval))
     }
+    
+    func getConvertedTemperatureFrom(kelvin: Double) -> Double {
+        guard let tempPreference = UserDefaults.standard.object(forKey: K.Constants.temperature_preference) as? String else {
+            UserDefaults.standard.set(K.Constants.celcius, forKey: K.Constants.temperature_preference)
+            return self.getCelciusFrom(kelvin: kelvin)
+        }
+        if tempPreference == K.Constants.celcius {
+            return self.getCelciusFrom(kelvin: kelvin)
+        } else {
+            return self.getFahrenheitFrom(kelvin: kelvin)
+        }
+    }
+    
+    func getCelciusFrom(kelvin: Double) -> Double {
+        return kelvin - 273.15
+    }
+    
+    func getFahrenheitFrom(kelvin: Double) -> Double {
+        return ((kelvin - 273.15) * (9/5)) + 32
+    }
 }
 
 
