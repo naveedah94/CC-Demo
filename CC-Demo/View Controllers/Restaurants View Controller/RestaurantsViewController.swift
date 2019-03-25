@@ -16,6 +16,7 @@ class RestaurantsViewController: UIViewController {
     
     @IBOutlet weak var restaurantsCollectionView: UICollectionView!
     
+    @IBOutlet weak var searchBar: UISearchBar!
     //Outlets End
     
     
@@ -23,6 +24,7 @@ class RestaurantsViewController: UIViewController {
     let lng = 67.137402
     
     var places: [PlaceItem]?
+    var filteredArray: [PlaceItem]?
     var cityName: String?
     
     override func viewDidLoad() {
@@ -31,6 +33,7 @@ class RestaurantsViewController: UIViewController {
         self.restaurantsCollectionView.delegate = self
         self.restaurantsCollectionView.dataSource = self
         
+        self.searchBar.delegate = self
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMdd"
@@ -63,9 +66,51 @@ class RestaurantsViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
+    
+    func filterListWith(keyword: String) {
+        if keyword != "" {
+            self.filteredArray = []
+            for item in self.places! {
+                if (item.venue?.name?.contains(keyword))! {
+                    self.filteredArray?.append(item)
+                }
+            }
+        } else {
+            self.filteredArray = self.places
+            self.restaurantsCollectionView.reloadData()
+        }
+    }
 
 }
 
+extension RestaurantsViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let str = searchBar.text
+        self.filterListWith(keyword: str!)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text != "" {
+            let str = searchBar.text! + text
+            self.filterListWith(keyword: str)
+        } else {
+            var str = ""
+            let maxCount = searchBar.text?.count - 1
+            let currentCount = 0
+            
+            for i in 0 ... (searchBar.text!.count - 2) {
+                if currentCount == maxCount - 2 {
+                    
+                }
+                str = str + String(searchBar.text![i])
+            }
+            self.filterListWith(keyword: str)
+        }
+        return true
+    }
+    
+}
 
 extension RestaurantsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -74,7 +119,7 @@ extension RestaurantsViewController: UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let array = self.places {
+        if let array = self.filteredArray {
             return array.count
         } else {
             return 0
@@ -102,9 +147,6 @@ extension RestaurantsViewController: UICollectionViewDelegate, UICollectionViewD
         } else {
             cell.categoryLabel.text = "-"
         }
-        
-        cell.itemImage.sd_setImage(with: URL.init(string: (data.venue?.categories![0].icon?.prefix)! +  "100" + (data.venue?.categories![0].icon?.suffix)!), completed: nil)
-        
         
         return cell
     }

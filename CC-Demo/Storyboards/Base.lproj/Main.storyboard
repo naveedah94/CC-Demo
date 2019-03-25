@@ -449,8 +449,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="dLd-7u-5ku">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WRL-Ls-W3j">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="840"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="27b-xt-myc">
                                     <size key="itemSize" width="414" height="126"/>
@@ -494,7 +498,7 @@
                                                                 <constraint firstAttribute="trailing" secondItem="yl9-0h-OrC" secondAttribute="trailing" constant="2" id="wNX-Pq-T1V"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0N-fB-p5z">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0N-fB-p5z">
                                                             <rect key="frame" x="126" y="16" width="240" height="21.5"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                             <nil key="textColor"/>
@@ -601,14 +605,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="WRL-Ls-W3j" secondAttribute="bottom" id="D8t-ga-WGB"/>
-                            <constraint firstItem="WRL-Ls-W3j" firstAttribute="top" secondItem="bfX-Jh-KnA" secondAttribute="top" id="Nje-zc-o0b"/>
+                            <constraint firstItem="WRL-Ls-W3j" firstAttribute="top" secondItem="dLd-7u-5ku" secondAttribute="bottom" id="Imo-sh-f5F"/>
                             <constraint firstItem="WRL-Ls-W3j" firstAttribute="leading" secondItem="a1O-Uo-dbq" secondAttribute="leading" id="bIe-oI-EvV"/>
+                            <constraint firstItem="dLd-7u-5ku" firstAttribute="trailing" secondItem="a1O-Uo-dbq" secondAttribute="trailing" id="gUz-OW-oXN"/>
                             <constraint firstAttribute="trailing" secondItem="WRL-Ls-W3j" secondAttribute="trailing" id="hIP-2P-lmP"/>
+                            <constraint firstItem="dLd-7u-5ku" firstAttribute="top" secondItem="bfX-Jh-KnA" secondAttribute="top" id="klU-gA-LJf"/>
+                            <constraint firstItem="dLd-7u-5ku" firstAttribute="leading" secondItem="a1O-Uo-dbq" secondAttribute="leading" id="zRU-tV-PcM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="a1O-Uo-dbq"/>
                     </view>
                     <connections>
                         <outlet property="restaurantsCollectionView" destination="WRL-Ls-W3j" id="g1e-5r-ctd"/>
+                        <outlet property="searchBar" destination="dLd-7u-5ku" id="6U9-ob-LqT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4YJ-aH-JBX" userLabel="First Responder" sceneMemberID="firstResponder"/>
