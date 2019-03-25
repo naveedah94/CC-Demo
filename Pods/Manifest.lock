@@ -1,0 +1,39 @@
+PODS:
+  - Alamofire (5.0.0.beta.1)
+  - IQKeyboardManagerSwift (6.0.4)
+  - MBProgressHUD (1.1.0)
+  - SDWebImage (4.4.4):
+    - SDWebImage/Core (= 4.4.4)
+  - SDWebImage/Core (4.4.4)
+
+DEPENDENCIES:
+  - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, branch `alamofire5`)
+  - IQKeyboardManagerSwift (= 6.0.4)
+  - MBProgressHUD (~> 1.0)
+  - SDWebImage (~> 4.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - IQKeyboardManagerSwift
+    - MBProgressHUD
+    - SDWebImage
+
+EXTERNAL SOURCES:
+  Alamofire:
+    :branch: alamofire5
+    :git: https://github.com/Alamofire/Alamofire.git
+
+CHECKOUT OPTIONS:
+  Alamofire:
+    :commit: 2c99a6691dac40f03ef9f9e89aaf2eb751843393
+    :git: https://github.com/Alamofire/Alamofire.git
+
+SPEC CHECKSUMS:
+  Alamofire: 2ef6d6c984c5d21c366e9b41a9ae7dfee2b67a44
+  IQKeyboardManagerSwift: 36dbe324b4f9793f5f41ba5227f3e7c76dfefd50
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  SDWebImage: c00ec18ab25d10e5ffac109b0f78d1b4341c9691
+
+PODFILE CHECKSUM: a3baacb18be6505ddd2db9efb28e4f01047bed20
+
+COCOAPODS: 1.5.3
